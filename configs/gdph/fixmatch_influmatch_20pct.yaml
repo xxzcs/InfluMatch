@@ -1,0 +1,76 @@
+# GDPH 20% labeled-data protocol for FixMatch + InfluMatch.
+algorithm: fixmatch_influmatch
+save_dir: ./saved_models
+save_name: influ_match_gdph_20pct_fold0_seed1
+resume: False
+load_path: ./saved_models/influ_match_gdph_20pct_fold0_seed1/latest_model.pth
+overwrite: True
+use_tensorboard: True
+use_wandb: False
+
+epoch: 50
+num_train_iter: 2400
+num_log_iter: 48
+num_eval_iter: 48
+num_warmup_iter: 96
+batch_size: 8
+eval_batch_size: 16
+uratio: 30
+ema_m: 0.999
+
+dataset: gdph
+data_dir: ./data/GDPH_SYSUCC
+num_classes: 2
+num_labels: 384
+label_ratio: 0.20
+fold: 0
+split_seed: 0
+seed: 1
+img_size: 224
+crop_ratio: 0.875
+train_sampler: RandomSampler
+num_workers: 4
+include_lb_to_ulb: False
+lpath: ''
+ulpath: ''
+
+hard_label: True
+T: 0.5
+p_cutoff: 0.9
+ulb_loss_ratio: 1.0
+
+optim: SGD
+lr: 0.0046875
+momentum: 0.9
+weight_decay: 0.0005
+sched: linear
+lr_drop_iter: 720 1440 2160
+layer_decay: 1.0
+net: resnet18
+net_from_name: False
+use_pretrain: False
+amp: False
+clip: 0.0
+use_cat: True
+world_size: 1
+rank: 0
+multiprocessing_distributed: False
+dist_backend: nccl
+gpu: None
+
+# InfluMatch relation-guidance settings.
+ifrank_loss_weight: 1.0
+corrT: 0.9
+num_references: 4
+ref_select: by_instance
+ref_cand_k: 8
+ifrank_combine: multiply_balanced
+if_lambda: 1.0
+csim_lambda: 1.0
+use_strong_if: True
+if_tracin_scale: 1.0
+ifrank_score_mode: fused
+if_target: hard
+if_mean_reduce: True
+ifrank_warmup_epochs: 5
+ifrank_warmup_mode: zero
